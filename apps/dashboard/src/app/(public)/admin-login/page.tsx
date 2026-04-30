@@ -1,10 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock } from 'lucide-react';
 
 export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<LoginFallback />}>
+      <AdminLoginForm />
+    </Suspense>
+  );
+}
+
+function LoginFallback() {
+  return (
+    <div className="max-w-md mx-auto px-6 py-20">
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-7">
+        <div className="flex items-center gap-2 text-slate-900">
+          <Lock size={16} className="text-green-600" />
+          <h1 className="text-lg font-semibold">Admin access</h1>
+        </div>
+        <p className="mt-2 text-sm text-slate-500">Loading…</p>
+      </div>
+    </div>
+  );
+}
+
+function AdminLoginForm() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get('next') ?? '/admin';

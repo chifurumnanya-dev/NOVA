@@ -1,12 +1,12 @@
-# Product Requirements Document: HealthAccess NG Open API Platform
+# Product Requirements Document: NOVA Open API Platform
 
 ## 1. Product Name
 
-**HealthAccess NG**
+**NOVA**
 
 ## 2. Product Summary
 
-HealthAccess NG is an open-source, API-first healthcare data platform for Nigeria. It provides structured, searchable, and developer-friendly data on Nigerian health facilities, hospital clinic schedules, and public health opportunities.
+NOVA-Nigerian Open Verified Access is an open-source, API-first healthcare data platform for Nigeria. It provides structured, searchable, and developer-friendly data on Nigerian health facilities, hospital clinic schedules
 
 The platform should function both as:
 
@@ -19,7 +19,7 @@ The system should be built to a high standard, with strong attention to API desi
 
 ## 3. Core Product Vision
 
-Healthcare information in Nigeria is often scattered, inconsistent, outdated, or difficult to access in a machine-readable format. HealthAccess NG aims to solve this by creating a structured, open-source, community-powered healthcare data infrastructure layer.
+Healthcare information in Nigeria is often scattered, inconsistent, outdated, or difficult to access in a machine-readable format. NOVA aims to solve this by creating a structured, open-source, community-powered healthcare data infrastructure layer.
 
 The platform should allow users to:
 
@@ -41,7 +41,7 @@ Developers building health-tech apps, emergency tools, referral tools, public he
 
 ### 4.2 Public Health Professionals
 
-People working in public health who need structured information on facilities, opportunities, and health system coverage.
+People working in public health who need structured information on facilities, and health system coverage.
 
 ### 4.3 Researchers and NGOs
 
@@ -215,7 +215,7 @@ Initial specialties should include:
 
 ## 13. Feature Overview
 
-The Open API for Nigerian Health Facilities and Services is the developer-facing core of HealthAccess NG. It should expose clean, structured, versioned, and well-documented API endpoints for Nigerian healthcare facility and service data.
+The Open API for Nigerian Health Facilities and Services is the developer-facing core of NOVA. It should expose clean, structured, versioned, and well-documented API endpoints for Nigerian healthcare facility and service data.
 
 This module is not a separate content board. Instead, it is the public API layer that allows developers, researchers, civic-tech builders, health-tech teams, NGOs, and public health organisations to access reliable healthcare data programmatically.
 
@@ -315,15 +315,6 @@ GET /api/v1/clinic-schedules/search
 POST /api/v1/clinic-schedules/contributions
 ```
 
-### Opportunities
-
-```txt
-GET /api/v1/opportunities
-GET /api/v1/opportunities/{id}
-GET /api/v1/opportunities/search
-POST /api/v1/opportunities/contributions
-```
-
 ### Metadata
 
 ```txt
@@ -357,17 +348,6 @@ Clinic schedules should support filters such as:
 ?specialty=cardiology
 ?day=monday
 ?referral_required=true
-?page=1
-?limit=20
-```
-
-Opportunities should support filters such as:
-
-```txt
-?category=fellowship
-?field=public-health
-?remote=true
-?deadline_before=2026-06-30
 ?page=1
 ?limit=20
 ```
@@ -464,10 +444,9 @@ The dashboard should include:
 3. Facility search page
 4. Facility profile page
 5. Clinic schedule search page
-6. Opportunity board page
-7. Contribution page
-8. API documentation page
-9. Admin dashboard
+6. Contribution page
+7. API documentation page
+8. Admin dashboard
 
 ## 17.3 Overview Dashboard
 
@@ -475,7 +454,6 @@ The overview dashboard should show:
 
 - Total facilities
 - Total clinic schedules
-- Total opportunities
 - Number of states covered
 - Number of LGAs covered
 - Verified vs unverified records
@@ -497,7 +475,7 @@ Map features:
 - Display number of verified facilities per state
 - Display number of clinic schedules per state
 - Display coverage percentage where available
-- Option to switch between facility coverage, clinic schedule coverage, and opportunity coverage
+- Option to switch between facility coverage, clinic schedule coverage
 
 ## 17.5 Facility Map
 
@@ -528,19 +506,7 @@ Each facility profile should show:
 - Last verified date
 - Suggest correction button
 
-## 17.7 Opportunity Board Page
-
-Opportunity board should show:
-
-- Cards/list of opportunities
-- Deadline badges
-- Category filters
-- Remote/on-site badge
-- Field tags
-- Application button
-- Expired opportunity handling
-
-## 17.8 Admin Dashboard
+## 17.7 Admin Dashboard
 
 The admin dashboard should allow authorised users to:
 
@@ -549,7 +515,6 @@ The admin dashboard should allow authorised users to:
 - Reject contributions
 - Edit facility data
 - Edit clinic schedules
-- Edit opportunities
 - View audit logs
 - View data quality warnings
 
@@ -674,7 +639,6 @@ Initial tables:
 - facility_services
 - specialties
 - clinic_schedules
-- opportunities
 - contributions
 - users
 - api_keys
@@ -823,15 +787,6 @@ Verification badges:
 - Stale
 - Rejected
 
-Opportunity badges:
-
-- Fellowship
-- Grant
-- Scholarship
-- Remote
-- Deadline soon
-- Expired
-
 Facility badges:
 
 - Public
@@ -957,7 +912,6 @@ Audit logs should record:
 - Public API
 - Facility search
 - Clinic schedule search
-- Opportunity listing
 - API documentation
 - Dashboard overview
 - Nigerian map explorer
@@ -974,9 +928,8 @@ Audit logs should record:
 
 Start with:
 
-- 50 health facilities
-- 50 clinic schedules
-- 50 public health opportunities
+- 10,000 health facilities
+- 10,000 clinic schedules
 - All 36 states and FCT
 - Sample LGAs for states covered by the first dataset
 
@@ -1001,8 +954,8 @@ Initial success metrics:
 
 - API is publicly accessible
 - Documentation is complete
-- At least 100 records exist across modules
-- At least 10 states have facility data
+- At least 10,000 records exist across modules
+- At least 20 states have facility data
 - Search works by state, LGA, service, and specialty
 - Map renders state-level coverage
 - Contributions can be submitted and reviewed
@@ -1053,7 +1006,6 @@ Developer success metrics:
 - Build Nigerian map explorer
 - Build facility list page
 - Build clinic schedule list page
-- Build opportunity board page
 
 ## Milestone 5: Contributions and Admin
 
@@ -1129,50 +1081,11 @@ The coding agent must:
 
 ---
 
-# 27. Initial Prompt for Antigravity or Claude Code
-
-Use this prompt to begin implementation:
-
-```txt
-You are building HealthAccess NG, a production-grade open-source healthcare data API platform for Nigeria.
-
-Build an API-first monorepo with three modules:
-
-1. Health Facility Finder
-2. ClinicDay NG
-3. Public Health Opportunity Board
-
-The project should use TypeScript and follow clean architecture principles. It should include a public REST API, dashboard web app, API documentation, Nigerian map explorer, contribution workflow, and admin review workflow.
-
-Recommended stack:
-- API: Cloudflare Workers + Hono + TypeScript
-- Database: PostgreSQL with Drizzle ORM
-- Validation: Zod
-- Web dashboard: Next.js + Tailwind CSS
-- Charts: Recharts
-- Map: Leaflet or another suitable React map library
-- Documentation: OpenAPI with Scalar, Redoc, or Swagger UI
-
-Start by creating the monorepo structure, shared packages, database schema, API response utilities, and the first set of public endpoints for facilities, clinic schedules, and opportunities.
-
-Important standards:
-- Use /api/v1 versioning.
-- Use standard success and error response formats.
-- Add pagination and filtering.
-- Use strict TypeScript.
-- Use reusable validation schemas.
-- Keep route handlers thin and place business logic in service files.
-- Build a clean dashboard with a Nigerian map, stat cards, tables, filters, and useful coverage insights.
-- Include a proper README, CONTRIBUTING guide, CHANGELOG, SECURITY file, and open-source licence.
-```
-
----
-
-# 28. Launch Positioning
+# 27. Launch Positioning
 
 The project can eventually be described as:
 
-HealthAccess NG is an open-source API and dashboard for Nigerian healthcare data. It provides structured access to health facilities, hospital clinic schedules, and public health opportunities across Nigeria, with contribution workflows, verification status, map-based exploration, and developer-friendly documentation.
+NOVA is an open-source API and dashboard for Nigerian healthcare data. It provides structured access to health facilities, hospital clinic schedules, and public health opportunities across Nigeria, with contribution workflows, verification status, map-based exploration, and developer-friendly documentation.
 
 ---
 

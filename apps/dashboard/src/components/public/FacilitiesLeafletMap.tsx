@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import 'leaflet/dist/leaflet.css';
 import type { Facility } from '@/lib/api';
 
 interface Props {

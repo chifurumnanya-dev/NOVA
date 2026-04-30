@@ -1,12 +1,15 @@
+import type { CSSProperties } from 'react';
+
 // Skeleton — animated placeholder for loading states
 
 interface SkeletonProps {
   className?: string;
+  style?: CSSProperties;
 }
 
-export function Skeleton({ className = '' }: SkeletonProps) {
+export function Skeleton({ className = '', style }: SkeletonProps) {
   return (
-    <div className={`skeleton ${className}`} aria-hidden="true" />
+    <div className={`skeleton ${className}`} style={style} aria-hidden="true" />
   );
 }
 
@@ -72,7 +75,7 @@ export function ChartSkeleton({ height = 260 }: { height?: number }) {
     <div className="flex items-end gap-2 px-4 pb-4" style={{ height }}>
       {[60, 90, 45, 75, 50, 85, 40, 70].map((h, i) => (
         <div key={i} className="flex-1 flex flex-col justify-end">
-          <Skeleton className="w-full rounded-t-lg" style={{ height: `${h}%` } as React.CSSProperties} />
+          <Skeleton className="w-full rounded-t-lg" style={{ height: `${h}%` }} />
         </div>
       ))}
     </div>

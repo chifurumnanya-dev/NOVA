@@ -66,7 +66,6 @@ export default function NigeriaMap({ onStateClick }: MapProps) {
 
     const initMap = async () => {
       const L = (await import('leaflet')).default;
-      await import('leaflet/dist/leaflet.css');
 
       if (!mapRef.current) return;
       if ((mapRef.current as any)._leaflet_id) return;

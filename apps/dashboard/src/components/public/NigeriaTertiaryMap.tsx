@@ -6,6 +6,7 @@ import {
   projectLonLat,
   isInsideNigeria,
 } from '@/lib/nigeria-svg';
+import { unstable_noStore as noStore } from 'next/cache';
 import { API_BASE_V1_URL, BUILD_FETCH_TIMEOUT_MS } from '@/lib/config';
 
 type Tier = 'teaching' | 'specialized';
@@ -336,7 +337,7 @@ async function fetchTier(facilityType: string, limit = 150): Promise<MapFacility
   try {
     const url = `${API_BASE_V1_URL}/facilities?facility_type=${facilityType}&limit=${limit}`;
     const res = await fetch(url, {
-      next: { revalidate: 60 },
+      cache: 'no-store',
       signal: AbortSignal.timeout(BUILD_FETCH_TIMEOUT_MS),
     });
     if (!res.ok) return [];
@@ -363,6 +364,8 @@ async function fetchTier(facilityType: string, limit = 150): Promise<MapFacility
 }
 
 export default async function NigeriaTertiaryMap() {
+  noStore();
+
   const [teaching, federal, specialist] = await Promise.all([
     fetchTier('teaching_hospital'),
     fetchTier('federal_medical_centre'),

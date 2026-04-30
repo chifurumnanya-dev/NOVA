@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8787';
+import { API_BASE_V1_URL } from '@/lib/config';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -25,7 +25,7 @@ class ApiError extends Error {
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<ApiResponse<T>> {
-  const res = await fetch(`${BASE_URL}/api/v1${path}`, {
+  const res = await fetch(`${API_BASE_V1_URL}${path}`, {
     headers: { 'Content-Type': 'application/json', ...init?.headers },
     ...init,
   });

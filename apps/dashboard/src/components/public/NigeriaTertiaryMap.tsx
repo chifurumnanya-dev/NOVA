@@ -6,6 +6,7 @@ import {
   projectLonLat,
   isInsideNigeria,
 } from '@/lib/nigeria-svg';
+import { API_BASE_V1_URL, BUILD_FETCH_TIMEOUT_MS } from '@/lib/config';
 
 type Tier = 'teaching' | 'specialized';
 
@@ -331,12 +332,13 @@ interface MapFacility {
   lon: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8787';
-
 async function fetchTier(facilityType: string, limit = 150): Promise<MapFacility[]> {
   try {
-    const url = `${API_BASE}/api/v1/facilities?facility_type=${facilityType}&limit=${limit}`;
-    const res = await fetch(url, { next: { revalidate: 60 } });
+    const url = `${API_BASE_V1_URL}/facilities?facility_type=${facilityType}&limit=${limit}`;
+    const res = await fetch(url, {
+      next: { revalidate: 60 },
+      signal: AbortSignal.timeout(BUILD_FETCH_TIMEOUT_MS),
+    });
     if (!res.ok) return [];
     const json = await res.json();
     const list: ApiFacility[] = json?.data ?? [];

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { CheckCircle, ChevronDown, Github, FileText, ArrowRight, Loader2, MapPin } from 'lucide-react';
+import { API_BASE_V1_URL } from '@/lib/config';
 
 const NIGERIAN_STATES = [
   'Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno',
@@ -44,7 +45,7 @@ export default function PublicContributePage() {
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8787'}/api/v1/contributions`, {
+      const res = await fetch(`${API_BASE_V1_URL}/contributions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

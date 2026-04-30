@@ -1,7 +1,5 @@
 import { ExternalLink } from 'lucide-react';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'https://nova-api.nova-ng.workers.dev';
-const API_BASE_V1 = `${API_BASE}/api/v1`;
+import { API_BASE_V1_URL as API_BASE_V1 } from '@/lib/config';
 
 const METHOD_COLORS: Record<string, string> = {
   GET: 'bg-green-100 text-green-700 border-green-200',

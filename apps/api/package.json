@@ -1,0 +1,25 @@
+{
+  "name": "nova-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.2",
+    "@neondatabase/serverless": "^0.9.5",
+    "@nova/db": "*",
+    "@nova/types": "*",
+    "@nova/utils": "*",
+    "drizzle-orm": "^0.30.10",
+    "hono": "^4.2.0",
+    "topojson-client": "^3.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260429.1",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.50.0"
+  }
+}

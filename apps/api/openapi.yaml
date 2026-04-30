@@ -1,0 +1,454 @@
+openapi: 3.1.0
+
+info:
+  title: NOVA API — Nigerian Open Verified Access
+  version: "1.0.0"
+  description: |
+    NOVA is an open-source, API-first healthcare data platform for Nigeria.
+    It provides structured, searchable, and developer-friendly data on
+    Nigerian health facilities and hospital clinic schedules.
+
+    **Base URL:** `https://api.nova.ng/api/v1`
+
+    **Rate Limits:**
+    - Anonymous: 100 requests/hour
+    - API Key: 1,000 requests/day
+
+    **Authentication:**
+    Read endpoints are public. Pass `X-Api-Key` for elevated limits.
+    Admin endpoints require `X-Admin-Secret`.
+  contact:
+    name: NOVA Open Source
+    url: https://github.com/nova-ng/nova
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.nova.ng/api/v1
+    description: Production
+  - url: http://localhost:8787/api/v1
+    description: Local development
+
+tags:
+  - name: Health
+    description: API health check
+  - name: Facilities
+    description: Health facilities across Nigeria
+  - name: Clinic Schedules
+    description: Specialist clinic days and schedules
+  - name: Metadata
+    description: States, LGAs, services, specialties, and stats
+  - name: Contributions
+    description: Community data contribution endpoints
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      tags: [Health]
+      operationId: getHealth
+      responses:
+        "200":
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /stats:
+    get:
+      summary: Global platform statistics
+      tags: [Metadata]
+      operationId: getStats
+      responses:
+        "200":
+          description: Platform statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatsResponse"
+
+  /states:
+    get:
+      summary: List all Nigerian states
+      tags: [Metadata]
+      operationId: listStates
+      responses:
+        "200":
+          description: List of states
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatesResponse"
+
+  /states/{state}/lgas:
+    get:
+      summary: List LGAs for a state
+      tags: [Metadata]
+      operationId: listLgas
+      parameters:
+        - name: state
+          in: path
+          required: true
+          schema:
+            type: string
+          example: lagos
+      responses:
+        "200":
+          description: State and its LGAs
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /services:
+    get:
+      summary: List all facility services
+      tags: [Metadata]
+      operationId: listServices
+      responses:
+        "200":
+          description: List of services
+
+  /specialties:
+    get:
+      summary: List all medical specialties
+      tags: [Metadata]
+      operationId: listSpecialties
+      responses:
+        "200":
+          description: List of specialties
+
+  /facilities:
+    get:
+      summary: List health facilities
+      tags: [Facilities]
+      operationId: listFacilities
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - name: state
+          in: query
+          schema: { type: string }
+          example: lagos
+        - name: lga
+          in: query
+          schema: { type: string }
+          example: ikeja
+        - name: facility_type
+          in: query
+          schema:
+            type: string
+            enum: [teaching_hospital, federal_medical_centre, general_hospital, primary_health_centre, private_hospital, mission_hospital, specialist_hospital, diagnostic_centre, laboratory, pharmacy, maternity_centre, dialysis_centre, emergency_centre]
+        - name: ownership
+          in: query
+          schema:
+            type: string
+            enum: [public, private, mission, ngo, military]
+        - name: service
+          in: query
+          schema: { type: string }
+          example: dialysis
+        - name: verified
+          in: query
+          schema:
+            type: string
+            enum: ["true", "false"]
+        - name: q
+          in: query
+          description: Search query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Paginated list of facilities
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FacilitiesListResponse"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /facilities/stats:
+    get:
+      summary: Facility statistics
+      tags: [Facilities]
+      operationId: getFacilityStats
+      responses:
+        "200":
+          description: Facility stats by state and type
+
+  /facilities/search:
+    get:
+      summary: Search facilities
+      tags: [Facilities]
+      operationId: searchFacilities
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Matching facilities
+
+  /facilities/{id}:
+    get:
+      summary: Get a facility by ID
+      tags: [Facilities]
+      operationId: getFacility
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Facility record
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /facilities/contributions:
+    post:
+      summary: Submit a new facility contribution
+      tags: [Contributions]
+      operationId: submitFacilityContribution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FacilityContributionBody"
+      responses:
+        "201":
+          description: Contribution submitted
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /clinic-schedules:
+    get:
+      summary: List clinic schedules
+      tags: [Clinic Schedules]
+      operationId: listClinicSchedules
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - name: state
+          in: query
+          schema: { type: string }
+        - name: specialty
+          in: query
+          schema: { type: string }
+        - name: day
+          in: query
+          schema:
+            type: string
+            enum: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+        - name: referral_required
+          in: query
+          schema:
+            type: string
+            enum: ["true", "false"]
+        - name: facility_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Paginated clinic schedules
+
+  /clinic-schedules/{id}:
+    get:
+      summary: Get a clinic schedule by ID
+      tags: [Clinic Schedules]
+      operationId: getClinicSchedule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Clinic schedule
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /clinic-schedules/contributions:
+    post:
+      summary: Submit a clinic schedule contribution
+      tags: [Contributions]
+      operationId: submitClinicScheduleContribution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClinicScheduleContributionBody"
+      responses:
+        "201":
+          description: Contribution submitted
+
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  schemas:
+    PaginationMeta:
+      type: object
+      properties:
+        page: { type: integer }
+        limit: { type: integer }
+        total: { type: integer }
+        total_pages: { type: integer }
+        has_next_page: { type: boolean }
+
+    HealthResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: object
+          properties:
+            status: { type: string, example: ok }
+            version: { type: string, example: v1 }
+            timestamp: { type: string, format: date-time }
+
+    StatsResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: object
+          properties:
+            total_facilities: { type: integer }
+            total_clinic_schedules: { type: integer }
+            states_covered: { type: integer }
+            lgas_covered: { type: integer }
+            verified_facilities: { type: integer }
+
+    StatesResponse:
+      type: object
+      properties:
+        success: { type: boolean }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string, format: uuid }
+              name: { type: string }
+              code: { type: string }
+
+    FacilitiesListResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: true }
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Facility"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+
+    Facility:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        facilityType: { type: string }
+        ownership: { type: string }
+        state: { type: object, properties: { name: { type: string } } }
+        lga: { type: object, properties: { name: { type: string } } }
+        address: { type: string, nullable: true }
+        phone: { type: string, nullable: true }
+        email: { type: string, nullable: true }
+        website: { type: string, nullable: true }
+        latitude: { type: number, nullable: true }
+        longitude: { type: number, nullable: true }
+        verificationStatus: { type: string }
+        confidenceScore: { type: number }
+        createdAt: { type: string, format: date-time }
+
+    FacilityContributionBody:
+      type: object
+      required: [name, facilityType, ownership, state]
+      properties:
+        name: { type: string }
+        facilityType: { type: string }
+        ownership: { type: string }
+        state: { type: string }
+        lga: { type: string }
+        address: { type: string }
+        phone: { type: string }
+        email: { type: string, format: email }
+        latitude: { type: number }
+        longitude: { type: number }
+        services: { type: array, items: { type: string } }
+        dataSource: { type: string }
+        submitterEmail: { type: string, format: email }
+
+    ClinicScheduleContributionBody:
+      type: object
+      required: [facilityId, clinicName, dayOfWeek, startTime, endTime]
+      properties:
+        facilityId: { type: string, format: uuid }
+        clinicName: { type: string }
+        dayOfWeek: { type: string, enum: [monday, tuesday, wednesday, thursday, friday, saturday, sunday] }
+        startTime: { type: string, pattern: "^\\d{2}:\\d{2}$" }
+        endTime: { type: string, pattern: "^\\d{2}:\\d{2}$" }
+        specialty: { type: string }
+        referralRequired: { type: boolean }
+        notes: { type: string }
+        submitterEmail: { type: string, format: email }
+
+    ErrorResponse:
+      type: object
+      properties:
+        success: { type: boolean, example: false }
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details: {}
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+    AdminSecret:
+      type: apiKey
+      in: header
+      name: X-Admin-Secret

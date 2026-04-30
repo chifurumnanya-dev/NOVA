@@ -1,0 +1,6 @@
+name = "nova-api"
+main = "src/index.ts"
+compatibility_date = "2024-04-01"
+
+[vars]
+# Add environment variables here if needed

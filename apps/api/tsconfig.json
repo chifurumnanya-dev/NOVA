@@ -1,0 +1,10 @@
+{
+  "extends": "../../packages/tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["esnext", "webworker"],
+    "types": ["@cloudflare/workers-types"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx"
+  },
+  "include": ["src/**/*"]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@nova/db",
+  "version": "1.0.0",
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/migrate.ts",
+    "db:seed": "tsx src/seed.ts",
+    "db:import-grid3": "tsx src/import-grid3.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.5",
+    "drizzle-orm": "^0.30.10",
+    "postgres": "^3.4.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.20.17",
+    "tsx": "^4.11.0",
+    "typescript": "^5.4.5"
+  }
+}

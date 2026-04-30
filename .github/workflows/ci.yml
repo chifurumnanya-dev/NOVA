@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ─── Type Check & Lint ────────────────────────────────────────────────────────
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check packages
+        run: npx tsc --noEmit -p packages/db/tsconfig.json
+
+      - name: Type check utils
+        run: npx tsc --noEmit -p packages/utils/tsconfig.json
+
+      - name: Type check types
+        run: npx tsc --noEmit -p packages/types/tsconfig.json
+
+  # ─── API Build ────────────────────────────────────────────────────────────────
+  api-build:
+    name: API Build (Wrangler)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: .
+
+      - name: Dry-run Wrangler build
+        run: npx wrangler deploy --dry-run --outdir dist
+
+  # ─── Dashboard Build ──────────────────────────────────────────────────────────
+  dashboard-build:
+    name: Dashboard Build (Next.js)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: .
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://api.nova.ng
+
+  # ─── Unit Tests ───────────────────────────────────────────────────────────────
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test --if-present

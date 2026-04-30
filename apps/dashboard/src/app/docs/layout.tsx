@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Activity, ExternalLink, Github } from 'lucide-react';
+import { API_BASE_V1_URL as API_BASE_V1 } from '@/lib/config';
 import DocsSidebar from './DocsSidebar';
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </Link>
           <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide text-[12px] sm:text-[13px]">
             <a
-              href="/api/v1/health"
+              href={`${API_BASE_V1}/health`}
               target="_blank"
               rel="noopener noreferrer"
               className="whitespace-nowrap px-2.5 sm:px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5"

@@ -432,6 +432,14 @@ export default function DocsPage() {
 
         <Endpoint id="meta-health" method="GET" path="/api/v1/health" title="Health check">
           <p>Returns a simple liveness response. Use this for monitoring and uptime checks.</p>
+          <a
+            href={`${API_BASE_V1}/health`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-medium text-green-700 hover:text-green-800"
+          >
+            <ExternalLink size={14} /> Open health endpoint
+          </a>
           <CodeBlock>{`{ "success": true, "data": { "status": "ok" } }`}</CodeBlock>
         </Endpoint>
       </section>

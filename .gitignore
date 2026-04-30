@@ -53,3 +53,6 @@ scratch/
 
 # Local planning docs
 nova_prd.md
+CHANGELOG.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md

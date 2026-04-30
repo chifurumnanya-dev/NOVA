@@ -215,39 +215,41 @@ export default function SearchBar({
 
   return (
     <div ref={containerRef} className="relative w-full">
-      <div className="relative">
-        <Search
-          size={isLg ? 18 : 15}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-        />
-        <input
-          type="text"
-          value={q}
-          onChange={(e) => {
-            userInteractedRef.current = true;
-            setQ(e.target.value);
-          }}
-          onFocus={() => results.length > 0 && setOpen(true)}
-          onKeyDown={onKeyDown}
-          placeholder="Search a hospital, clinic, or specialty…"
-          autoFocus={autoFocus}
-          className={`
-            w-full bg-white border border-slate-300 rounded-2xl shadow-sm
-            text-slate-900 placeholder:text-slate-400
-            focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500
-            transition-all
-            ${isLg ? 'pl-12 pr-32 py-4 text-[15px]' : 'pl-10 pr-24 py-2.5 text-sm'}
-          `}
-        />
+      <div className={isLg ? 'relative flex flex-col gap-3 sm:block' : 'relative'}>
+        <div className="relative">
+          <Search
+            size={isLg ? 18 : 15}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+          <input
+            type="text"
+            value={q}
+            onChange={(e) => {
+              userInteractedRef.current = true;
+              setQ(e.target.value);
+            }}
+            onFocus={() => results.length > 0 && setOpen(true)}
+            onKeyDown={onKeyDown}
+            placeholder="Search a hospital, clinic, or specialty…"
+            autoFocus={autoFocus}
+            className={`
+              w-full bg-white border border-slate-300 rounded-2xl shadow-sm
+              text-slate-900 placeholder:text-slate-400
+              focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500
+              transition-all
+              ${isLg ? 'pl-12 pr-4 py-4 text-[15px] sm:pr-32' : 'pl-10 pr-24 py-2.5 text-sm'}
+            `}
+          />
+        </div>
         <button
           type="button"
           onClick={() => submit(q)}
           disabled={!q.trim() && !hasAnyFilter}
           className={`
-            absolute right-2 top-1/2 -translate-y-1/2
+            inline-flex items-center justify-center
             bg-green-600 hover:bg-green-700 disabled:bg-green-600/40 disabled:cursor-not-allowed
             text-white font-semibold rounded-xl transition-colors
-            ${isLg ? 'px-5 py-2.5 text-sm' : 'px-3.5 py-1.5 text-xs'}
+            ${isLg ? 'w-full px-5 py-3 text-sm sm:absolute sm:right-2 sm:top-1/2 sm:w-auto sm:-translate-y-1/2 sm:py-2.5' : 'absolute right-2 top-1/2 -translate-y-1/2 px-3.5 py-1.5 text-xs'}
           `}
         >
           Search

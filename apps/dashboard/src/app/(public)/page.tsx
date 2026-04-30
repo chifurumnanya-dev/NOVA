@@ -5,9 +5,9 @@ import NigeriaTertiaryMap from '@/components/public/NigeriaTertiaryMap';
 
 export default function PublicHome() {
   return (
-    <div className="max-w-6xl mx-auto px-6 pb-16">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
       {/* Hero with grid pattern */}
-      <div className="relative pt-12 sm:pt-20 pb-8">
+      <div className="relative pt-10 sm:pt-20 pb-6 sm:pb-8">
         {/* Grid pattern background */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -27,19 +27,19 @@ export default function PublicHome() {
             <Sparkles size={11} />
             Open verified access
           </span>
-          <h1 className="mt-5 text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
+          <h1 className="mt-5 text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 text-balance">
             Find a verified Nigerian
             <br />
             <span className="bg-gradient-to-r from-green-500 to-green-700 bg-clip-text text-transparent">
               healthcare facility
             </span>
           </h1>
-          <p className="mt-5 text-base text-slate-500 max-w-xl mx-auto leading-relaxed">
+          <p className="mt-5 text-sm sm:text-base text-slate-500 max-w-xl mx-auto leading-relaxed text-balance">
             Search hospitals and clinics across all 36 states. Get addresses, phone
             numbers, services, and live clinic schedules — backed by an open API.
           </p>
 
-          <div className="mt-8 max-w-2xl mx-auto">
+          <div className="mt-8 max-w-2xl mx-auto w-full">
             <SearchBar size="lg" autoFocus />
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function PublicHome() {
       </div>
 
       {/* Why NOVA */}
-      <div className="mt-20 grid sm:grid-cols-3 gap-px bg-slate-200 rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
+      <div className="mt-14 sm:mt-20 grid sm:grid-cols-3 gap-px bg-slate-200 rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
         <Pillar
           title="Verified data"
           body="Every record carries a verification status, source, and confidence score — surface what's reliable, flag what's stale."

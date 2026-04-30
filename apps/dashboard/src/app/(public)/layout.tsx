@@ -23,7 +23,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               Docs
             </Link>
             <a
-              href="https://github.com/nova-ng/nova"
+              href="https://github.com/chifurumnanya-dev/NOVA"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5"

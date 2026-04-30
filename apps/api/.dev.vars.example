@@ -1,0 +1,8 @@
+# NOVA API — Local Environment Variables
+# Copy this to .dev.vars and fill in your values
+
+# PostgreSQL connection string used by the Workers API
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require
+
+# Shared admin secret for protected routes and dashboard admin login
+ADMIN_SECRET=replace-with-a-long-random-secret

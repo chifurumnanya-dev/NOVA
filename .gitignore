@@ -9,6 +9,9 @@ node_modules/
 dist/
 .next/
 out/
+build/
+coverage/
+.cache/
 
 # Environment
 .env
@@ -19,10 +22,18 @@ out/
 # Logs
 *.log
 npm-debug.log*
+*.tmp
+*.bak
+*.orig
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
 
 # Turbo
 .turbo/
@@ -35,3 +46,10 @@ drizzle/.snapshots
 
 # TypeScript
 *.tsbuildinfo
+
+# Local scratch / tool state
+scratch/
+.antigravity/
+
+# Local planning docs
+nova_prd.md

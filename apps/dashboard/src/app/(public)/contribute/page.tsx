@@ -216,7 +216,7 @@ export default function PublicContributePage() {
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
-              href="https://github.com/nova-ng/nova"
+              href="https://github.com/chifurumnanya-dev/NOVA"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-700 transition-colors"
@@ -224,7 +224,7 @@ export default function PublicContributePage() {
               <Github size={15} /> View on GitHub
             </a>
             <a
-              href="https://github.com/nova-ng/nova/blob/main/datasets/facilities-sample.json"
+              href="https://github.com/chifurumnanya-dev/NOVA/blob/main/datasets/facilities-sample.json"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors"

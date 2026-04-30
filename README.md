@@ -27,8 +27,11 @@ npm install
 
 # Setup environment variables
 cp apps/api/.dev.vars.example apps/api/.dev.vars
+cp packages/db/.env.example packages/db/.env
 cp apps/dashboard/.env.local.example apps/dashboard/.env.local
 ```
+
+Set `ADMIN_SECRET` to the same value in `apps/api/.dev.vars` and `apps/dashboard/.env.local` if you want to use the admin dashboard locally.
 
 ### Database Setup
 

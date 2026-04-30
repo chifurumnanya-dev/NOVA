@@ -1,4 +1,5 @@
 import Sidebar from '@/components/Sidebar';
+import LogoutButton from '@/components/LogoutButton';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,6 +17,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <a href="/docs" className="btn-primary text-xs py-1.5">
               API Docs
             </a>
+            <LogoutButton />
           </div>
         </header>
         <main className="flex-1 px-6 py-6">{children}</main>

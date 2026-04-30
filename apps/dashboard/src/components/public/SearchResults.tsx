@@ -18,7 +18,7 @@ import {
 const FacilitiesLeafletMap = dynamic(() => import('./FacilitiesLeafletMap'), {
   ssr: false,
   loading: () => (
-    <div className="h-full bg-white/[0.02] rounded-2xl flex items-center justify-center text-slate-500 text-sm">
+    <div className="h-full bg-white rounded-2xl flex items-center justify-center text-slate-500 text-sm">
       Loading map…
     </div>
   ),
@@ -99,7 +99,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
       </div>
 
       {error && (
-        <div className="rounded-xl border border-red-400/20 bg-red-400/[0.05] text-red-300 text-sm px-4 py-3 mb-3">
+        <div className="rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm px-4 py-3 mb-3">
           {error}
         </div>
       )}
@@ -113,7 +113,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
         "
       >
         {/* ── Result list ─────────────────────────────────────────────── */}
-        <div className="overflow-y-auto rounded-2xl border border-white/5 bg-white/[0.02] divide-y divide-white/5">
+        <div className="overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm divide-y divide-slate-100">
           {results.length === 0 && !loading && (
             <div className="p-6 text-center text-slate-500 text-sm">
               No facilities match this search.
@@ -130,7 +130,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
         </div>
 
         {/* ── Map ─────────────────────────────────────────────────────── */}
-        <div className="rounded-2xl overflow-hidden border border-white/5 bg-white/[0.02] min-h-[300px] xl:min-h-0">
+        <div className="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm min-h-[300px] xl:min-h-0">
           <FacilitiesLeafletMap
             facilities={results}
             selectedId={selectedId}
@@ -139,7 +139,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
         </div>
 
         {/* ── Detail panel (xl: side column · below xl: slide-over) ──── */}
-        <div className="hidden xl:block overflow-y-auto rounded-2xl border border-white/5 bg-white/[0.02]">
+        <div className="hidden xl:block overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
           {selected ? (
             <DetailPanel
               facility={selected}
@@ -155,7 +155,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
 
         {/* ── Mobile/tablet detail (slides up below the map) ─────────── */}
         {selected && (
-          <div className="xl:hidden lg:col-span-2 rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+          <div className="xl:hidden lg:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
             <DetailPanel
               facility={selected}
               schedules={schedules}
@@ -188,21 +188,21 @@ function ResultRow({
       className={`
         w-full text-left px-4 py-3.5 transition-colors border-l-2
         ${active
-          ? 'bg-emerald-400/[0.08] border-emerald-400'
-          : 'hover:bg-white/[0.03] border-transparent'}
+          ? 'bg-green-50 border-green-500'
+          : 'hover:bg-slate-50 border-transparent'}
       `}
     >
       <div className="flex items-start gap-2.5">
         <LevelIcon type={facility.facilityType} active={active} />
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-2">
-            <span className="text-sm font-medium text-slate-100 flex-1 leading-snug break-words">
+            <span className="text-sm font-medium text-slate-900 flex-1 leading-snug break-words">
               {facility.name}
             </span>
             {verified ? (
-              <CheckCircle2 size={13} className="text-emerald-400 mt-0.5 flex-shrink-0" />
+              <CheckCircle2 size={13} className="text-green-600 mt-0.5 flex-shrink-0" />
             ) : (
-              <AlertCircle size={13} className="text-amber-400/70 mt-0.5 flex-shrink-0" />
+              <AlertCircle size={13} className="text-amber-600 mt-0.5 flex-shrink-0" />
             )}
           </div>
           <div className="text-[11px] text-slate-500 mt-1.5 leading-snug">
@@ -217,7 +217,7 @@ function ResultRow({
 }
 
 function LevelIcon({ type, active }: { type: string; active: boolean }) {
-  const tone = active ? 'text-emerald-300' : 'text-slate-500';
+  const tone = active ? 'text-green-600' : 'text-slate-400';
   const Icon = type.includes('teaching') || type.includes('federal') || type.includes('specialist')
     ? Building2
     : type.includes('hospital')
@@ -242,7 +242,7 @@ function DetailPanel({
     <div className="p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h2 className="text-lg font-semibold text-white leading-tight break-words">
+          <h2 className="text-lg font-semibold text-slate-900 leading-tight break-words">
             {facility.name}
           </h2>
           <p className="text-xs text-slate-500 mt-1.5">
@@ -255,8 +255,8 @@ function DetailPanel({
           <span
             className={`px-2.5 py-1 rounded-full text-[10px] font-medium whitespace-nowrap ${
               verified
-                ? 'bg-emerald-400/10 text-emerald-300 border border-emerald-400/20'
-                : 'bg-amber-400/10 text-amber-300 border border-amber-400/20'
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-amber-50 text-amber-700 border border-amber-200'
             }`}
           >
             {facility.verificationStatus.replace(/_/g, ' ')}
@@ -266,7 +266,7 @@ function DetailPanel({
               type="button"
               onClick={onClose}
               aria-label="Close details"
-              className="text-slate-500 hover:text-slate-300 transition-colors"
+              className="text-slate-400 hover:text-slate-700 transition-colors"
             >
               <X size={16} />
             </button>
@@ -297,14 +297,14 @@ function DetailPanel({
             {schedules.slice(0, 12).map((s) => (
               <div
                 key={s.id}
-                className="rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2 text-xs"
+                className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs"
               >
-                <div className="text-slate-200 font-medium truncate">{s.clinicName}</div>
+                <div className="text-slate-900 font-medium truncate">{s.clinicName}</div>
                 <div className="text-slate-500 mt-0.5 capitalize">
                   {s.dayOfWeek} · {s.startTime}–{s.endTime}
                 </div>
                 {s.referralRequired && (
-                  <div className="text-amber-300/80 text-[10px] mt-0.5">Referral required</div>
+                  <div className="text-amber-700 text-[10px] mt-0.5">Referral required</div>
                 )}
               </div>
             ))}
@@ -325,8 +325,8 @@ function DetailRow({
   href?: string;
 }) {
   const inner = (
-    <span className="flex items-start gap-2 text-slate-300">
-      <span className="text-slate-500 mt-0.5">{icon}</span>
+    <span className="flex items-start gap-2 text-slate-700">
+      <span className="text-slate-400 mt-0.5">{icon}</span>
       <span className="break-all">{text}</span>
     </span>
   );
@@ -335,7 +335,7 @@ function DetailRow({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="block hover:text-emerald-300 transition-colors"
+      className="block hover:text-green-700 transition-colors"
     >
       {inner}
     </a>

@@ -49,13 +49,13 @@ export default function FacilitiesLeafletMap({ facilities, selectedId, onSelect 
         attributionControl: false,
       });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
         attribution: '© OpenStreetMap, © CARTO',
         subdomains: 'abcd',
         maxZoom: 19,
       }).addTo(map);
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
         subdomains: 'abcd',
         maxZoom: 19,
         pane: 'shadowPane',
@@ -95,10 +95,10 @@ export default function FacilitiesLeafletMap({ facilities, selectedId, onSelect 
 
         const marker = L.circleMarker([f.latitude, f.longitude], {
           radius: isSelected ? r * 1.4 : r,
-          color: verified ? '#34d399' : '#fbbf24',
-          weight: isSelected ? 2.5 : 1,
-          fillColor: verified ? '#34d399' : '#fbbf24',
-          fillOpacity: isSelected ? 0.95 : 0.7,
+          color: verified ? '#16a34a' : '#d97706',
+          weight: isSelected ? 2.5 : 1.25,
+          fillColor: verified ? '#22c55e' : '#f59e0b',
+          fillOpacity: isSelected ? 0.95 : 0.75,
         });
 
         marker.bindTooltip(

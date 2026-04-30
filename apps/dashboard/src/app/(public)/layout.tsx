@@ -31,12 +31,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               <Github size={13} />
               GitHub
             </a>
-            <Link
-              href="/admin"
-              className="ml-2 px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 transition-colors"
-            >
-              Admin
-            </Link>
           </nav>
         </div>
       </header>

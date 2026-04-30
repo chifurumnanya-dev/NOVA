@@ -21,7 +21,7 @@ function MethodBadge({ method }: { method: keyof typeof METHOD_COLORS }) {
 function CodeBlock({ children, lang = 'json' }: { children: string; lang?: string }) {
   const accent = lang === 'bash' ? 'text-amber-300' : lang === 'error' ? 'text-red-300' : 'text-green-300';
   return (
-    <pre className={`bg-slate-900 ${accent} text-xs px-4 py-3.5 rounded-xl overflow-x-auto font-mono leading-relaxed border border-slate-800`}>
+    <pre className={`bg-slate-900 ${accent} text-[11px] sm:text-xs px-3 sm:px-4 py-3.5 rounded-xl overflow-x-auto font-mono leading-relaxed border border-slate-800`}>
       {children}
     </pre>
   );
@@ -43,10 +43,10 @@ function Endpoint({
   return (
     <section id={id} className="scroll-mt-20 space-y-3 pt-2">
       <div>
-        <h3 className="text-lg font-semibold text-slate-900 tracking-tight">{title}</h3>
-        <div className="flex items-center gap-2.5 mt-2">
+        <h3 className="text-base sm:text-lg font-semibold text-slate-900 tracking-tight">{title}</h3>
+        <div className="mt-2 flex flex-wrap items-center gap-2.5">
           <MethodBadge method={method} />
-          <code className="text-sm font-mono text-slate-700">{path}</code>
+          <code className="text-xs sm:text-sm font-mono text-slate-700 break-all">{path}</code>
         </div>
       </div>
       <div className="space-y-3 text-sm text-slate-600 leading-relaxed">{children}</div>
@@ -56,8 +56,8 @@ function Endpoint({
 
 function ParamTable({ rows }: { rows: { name: string; type: string; desc: string }[] }) {
   return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden">
-      <table className="w-full text-xs">
+    <div className="border border-slate-200 rounded-xl overflow-x-auto">
+      <table className="w-full min-w-[36rem] text-xs">
         <thead className="bg-slate-50">
           <tr className="text-left text-slate-500">
             <th className="px-3 py-2 font-semibold">Parameter</th>
@@ -114,19 +114,19 @@ const ERROR_EXAMPLE = `{
 
 export default function DocsPage() {
   return (
-    <article className="space-y-14">
+    <article className="space-y-10 sm:space-y-14">
       {/* HERO */}
       <header className="border-b border-slate-200 pb-8">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-[11px] font-mono font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded">v1</span>
           <span className="text-[11px] font-mono text-slate-400">stable</span>
         </div>
-        <h1 className="text-4xl font-bold text-slate-900 tracking-tight">NOVA API</h1>
-        <p className="mt-3 text-base text-slate-600 leading-relaxed max-w-2xl">
+        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">NOVA API</h1>
+        <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
           Public REST API for Nigerian healthcare data. Read facilities, clinic schedules, and
           metadata across all 36 states and the FCT — no key required.
         </p>
-        <div className="mt-5 flex items-center gap-2">
+        <div className="mt-5 flex flex-col items-start gap-2 sm:flex-row sm:items-center">
           <a href={`${API_BASE_V1}/health`} target="_blank" rel="noopener noreferrer" className="btn-outline text-xs py-1.5">
             <ExternalLink size={12} /> Try live API
           </a>
@@ -136,7 +136,7 @@ export default function DocsPage() {
 
       {/* OVERVIEW */}
       <section id="overview" className="scroll-mt-20 space-y-3">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Overview</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Overview</h2>
         <p className="text-sm text-slate-600 leading-relaxed">
           NOVA provides free, structured access to healthcare facility data across Nigeria.
           All read operations are public and unauthenticated. Contributions (new facilities,
@@ -154,14 +154,14 @@ export default function DocsPage() {
 
       {/* BASE URL */}
       <section id="base-url" className="scroll-mt-20 space-y-3">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Base URL</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Base URL</h2>
         <p className="text-sm text-slate-600">All endpoints are served from a single base URL.</p>
         <CodeBlock lang="bash">{API_BASE_V1}</CodeBlock>
       </section>
 
       {/* AUTHENTICATION */}
       <section id="authentication" className="scroll-mt-20 space-y-3">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Authentication</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Authentication</h2>
         <p className="text-sm text-slate-600 leading-relaxed">
           All read endpoints and contribution submissions are open — no credentials required.
           Admin moderation endpoints (the contributions queue) are gated by a private
@@ -172,7 +172,7 @@ export default function DocsPage() {
 
       {/* RATE LIMITS */}
       <section id="rate-limits" className="scroll-mt-20 space-y-4">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Rate Limits</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Rate Limits</h2>
         <p className="text-sm text-slate-600">
           Requests are rate-limited per client IP. Every response includes rate-limit headers
           so you can track your remaining budget.
@@ -191,7 +191,7 @@ export default function DocsPage() {
 
       {/* QUICK START */}
       <section id="quick-start" className="scroll-mt-20 space-y-3">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Quick Start</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Quick Start</h2>
         <p className="text-sm text-slate-600">
           The fastest way to get started: list facilities with a state filter.
         </p>
@@ -204,7 +204,7 @@ export default function DocsPage() {
 
       {/* RESPONSE FORMAT */}
       <section id="response-format" className="scroll-mt-20 space-y-3">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Response Format</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Response Format</h2>
         <p className="text-sm text-slate-600">
           All successful responses share a stable envelope. List endpoints include pagination metadata
           under <code className="bg-slate-100 px-1 rounded text-xs">meta</code>.
@@ -214,7 +214,7 @@ export default function DocsPage() {
 
       {/* ERRORS */}
       <section id="errors" className="scroll-mt-20 space-y-3">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Errors</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Errors</h2>
         <p className="text-sm text-slate-600">
           Errors return a non-2xx status with a structured body. The <code className="bg-slate-100 px-1 rounded text-xs">code</code> field
           is stable and safe to branch on.
@@ -233,7 +233,7 @@ export default function DocsPage() {
 
       {/* ENUMS */}
       <section id="enums" className="scroll-mt-20 space-y-4">
-        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Enums</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Enums</h2>
         <p className="text-sm text-slate-600">
           Stable enum values used across the API. Pass these as filter values on list endpoints.
         </p>
@@ -293,7 +293,7 @@ export default function DocsPage() {
       <section className="scroll-mt-20 space-y-8 pt-2">
         <div className="border-t border-slate-200 pt-8">
           <p className="text-[11px] font-bold text-green-700 uppercase tracking-wider">API Reference</p>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">Facilities</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">Facilities</h2>
           <p className="text-sm text-slate-600 mt-2">
             Health facilities — hospitals, clinics, primary health centres — with location,
             ownership, services and verification status.

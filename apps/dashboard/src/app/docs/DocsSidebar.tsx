@@ -86,42 +86,75 @@ export default function DocsSidebar() {
   }, []);
 
   return (
-    <aside className="hidden lg:block w-60 shrink-0 sticky top-14 self-start h-[calc(100vh-3.5rem)] overflow-y-auto py-10 pr-4">
-      <nav className="space-y-7 text-sm">
-        {NAV_GROUPS.map((group) => (
-          <div key={group.title}>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">
-              {group.title}
-            </p>
-            <ul className="space-y-0.5">
-              {group.items.map((item) => {
-                const isActive = activeId === item.id;
-                return (
-                  <li key={item.id}>
-                    <a
-                      href={`#${item.id}`}
-                      className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-colors ${
-                        isActive
-                          ? 'bg-green-50 text-green-800 font-medium'
-                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                      }`}
-                    >
-                      {item.method && (
-                        <span
-                          className={`text-[9px] font-bold px-1.5 py-0.5 rounded font-mono ${METHOD_STYLES[item.method]}`}
-                        >
-                          {item.method}
-                        </span>
-                      )}
-                      <span className="text-[13px] leading-tight">{item.label}</span>
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+    <aside className="lg:w-60 lg:shrink-0 lg:sticky lg:top-14 lg:self-start lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto">
+      <div className="lg:hidden py-5 border-b border-slate-200">
+        <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">
+          On This Page
+        </p>
+        <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 w-max pb-1">
+            {NAV_GROUPS.flatMap((group) => group.items).map((item) => {
+              const isActive = activeId === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs transition-colors ${
+                    isActive
+                      ? 'border-green-200 bg-green-50 text-green-800 font-medium'
+                      : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'
+                  }`}
+                >
+                  {item.method && (
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded font-mono ${METHOD_STYLES[item.method]}`}>
+                      {item.method}
+                    </span>
+                  )}
+                  <span>{item.label}</span>
+                </a>
+              );
+            })}
           </div>
-        ))}
-      </nav>
+        </div>
+      </div>
+
+      <div className="hidden lg:block py-10 pr-4">
+        <nav className="space-y-7 text-sm">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.title}>
+              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-2">
+                {group.title}
+              </p>
+              <ul className="space-y-0.5">
+                {group.items.map((item) => {
+                  const isActive = activeId === item.id;
+                  return (
+                    <li key={item.id}>
+                      <a
+                        href={`#${item.id}`}
+                        className={`flex items-center gap-2 px-2 py-1.5 rounded-lg transition-colors ${
+                          isActive
+                            ? 'bg-green-50 text-green-800 font-medium'
+                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        }`}
+                      >
+                        {item.method && (
+                          <span
+                            className={`text-[9px] font-bold px-1.5 py-0.5 rounded font-mono ${METHOD_STYLES[item.method]}`}
+                          >
+                            {item.method}
+                          </span>
+                        )}
+                        <span className="text-[13px] leading-tight">{item.label}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </div>
     </aside>
   );
 }

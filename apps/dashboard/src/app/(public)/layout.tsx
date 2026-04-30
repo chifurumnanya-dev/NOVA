@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Activity, Github, Search } from 'lucide-react';
+import { Activity, Github } from 'lucide-react';
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,11 +15,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <nav className="min-w-0 flex items-center justify-end gap-1 overflow-x-auto scrollbar-hide text-[11px] sm:text-[13px]">
             <Link
               href="/search"
-              aria-label="Search"
-              className="inline-flex h-8 w-8 sm:h-auto sm:w-auto items-center justify-center rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors sm:px-3 sm:py-2"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg px-2.5 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors sm:px-3"
             >
-              <Search size={14} />
-              <span className="hidden sm:inline sm:ml-1.5">Search</span>
+              Search
             </Link>
             <Link href="/contribute" className="inline-flex items-center justify-center whitespace-nowrap rounded-lg px-2.5 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors sm:px-3">
               Contribute
@@ -31,11 +29,10 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               href="https://github.com/chifurumnanya-dev/NOVA"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="inline-flex h-8 w-8 sm:h-auto sm:w-auto items-center justify-center rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors sm:gap-1.5 sm:px-3 sm:py-2"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg px-2.5 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors sm:gap-1.5 sm:px-3"
             >
-              <Github size={13} />
-              <span className="hidden sm:inline">GitHub</span>
+              <Github size={13} className="hidden sm:inline-block" />
+              <span>GitHub</span>
             </a>
           </nav>
         </div>

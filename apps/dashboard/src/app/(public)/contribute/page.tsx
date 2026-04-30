@@ -204,7 +204,7 @@ export default function PublicContributePage() {
           <ol className="space-y-4">
             {[
               { step: '1', text: 'Fork the NOVA repository on GitHub.' },
-              { step: '2', text: 'Add or edit entries in datasets/facilities-sample.json following the existing schema.' },
+              { step: '2', text: 'Add or edit entries in datasets/facilities-sample.json using datasets/facilities-contribution-schema.json as your guide.' },
               { step: '3', text: 'Open a Pull Request with a clear description of what you\'re adding.' },
             ].map(({ step, text }) => (
               <li key={step} className="flex items-start gap-3">
@@ -213,6 +213,13 @@ export default function PublicContributePage() {
               </li>
             ))}
           </ol>
+
+          <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Schema highlights</p>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              Required fields: <code className="bg-white px-1.5 py-0.5 rounded text-xs">name</code>, <code className="bg-white px-1.5 py-0.5 rounded text-xs">facilityType</code>, <code className="bg-white px-1.5 py-0.5 rounded text-xs">ownership</code>, and <code className="bg-white px-1.5 py-0.5 rounded text-xs">state</code>. The GitHub schema also documents optional fields like coordinates, services, and source URLs.
+            </p>
+          </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
@@ -224,12 +231,20 @@ export default function PublicContributePage() {
               <Github size={15} /> View on GitHub
             </a>
             <a
-              href="https://github.com/chifurumnanya-dev/NOVA/blob/main/datasets/facilities-sample.json"
+              href="https://github.com/chifurumnanya-dev/NOVA/blob/main/datasets/facilities-contribution-schema.json"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors"
             >
               <FileText size={15} /> View Data Schema
+            </a>
+            <a
+              href="https://github.com/chifurumnanya-dev/NOVA/blob/main/datasets/facilities-sample.json"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors"
+            >
+              <FileText size={15} /> View Sample Entry
             </a>
           </div>
         </section>

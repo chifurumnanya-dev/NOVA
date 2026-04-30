@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/chifurumnanya-dev/NOVA/blob/main/datasets/facilities-contribution-schema.json",
+  "title": "NOVA Facility Contribution",
+  "description": "Schema for submitting or reviewing a healthcare facility contribution in NOVA.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "facilityType", "ownership", "state"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 255,
+      "description": "Official or commonly used facility name."
+    },
+    "facilityType": {
+      "type": "string",
+      "enum": [
+        "teaching_hospital",
+        "federal_medical_centre",
+        "general_hospital",
+        "primary_health_centre",
+        "private_hospital",
+        "mission_hospital",
+        "specialist_hospital",
+        "diagnostic_centre",
+        "laboratory",
+        "pharmacy",
+        "maternity_centre",
+        "dialysis_centre",
+        "emergency_centre"
+      ]
+    },
+    "ownership": {
+      "type": "string",
+      "enum": ["public", "private", "mission", "ngo", "military"]
+    },
+    "state": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100
+    },
+    "lga": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100
+    },
+    "ward": {
+      "type": "string",
+      "maxLength": 150
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri"
+    },
+    "openingHours": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataSource": {
+      "type": "string"
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "submitterEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "submitterName": {
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "name": "Lagos University Teaching Hospital",
+      "facilityType": "teaching_hospital",
+      "ownership": "public",
+      "state": "Lagos",
+      "lga": "Mushin",
+      "address": "Idi-Araba, Lagos",
+      "phone": "+2348012345678",
+      "latitude": 6.5176,
+      "longitude": 3.3676,
+      "services": ["emergency_care", "surgery", "paediatrics"],
+      "dataSource": "community_submission",
+      "sourceUrl": "https://www.luth.gov.ng/",
+      "submitterName": "NOVA Contributor",
+      "submitterEmail": "contributor@example.com"
+    }
+  ]
+}

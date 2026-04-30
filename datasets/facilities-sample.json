@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Lagos University Teaching Hospital",
+    "facilityType": "teaching_hospital",
+    "ownership": "public",
+    "state": "Lagos",
+    "lga": "Mushin",
+    "address": "Idi-Araba, Lagos",
+    "phone": "+2348012345678",
+    "latitude": 6.5176,
+    "longitude": 3.3676,
+    "services": ["emergency_care", "surgery", "paediatrics"],
+    "dataSource": "community_submission",
+    "sourceUrl": "https://www.luth.gov.ng/",
+    "submitterName": "NOVA Contributor",
+    "submitterEmail": "contributor@example.com"
+  }
+]

@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import { facilitiesApi, clinicSchedulesApi, type Facility, type ClinicSchedule } from '@/lib/api';
 import {
   MapPin,
@@ -34,19 +35,42 @@ interface Props {
 }
 
 export default function SearchResults({ q, state, type, level, ownership, verified }: Props) {
+  const router = useRouter();
   const [results, setResults] = useState<Facility[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [schedules, setSchedules] = useState<ClinicSchedule[]>([]);
   const [schedulesLoading, setSchedulesLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const hasAnyFilter = !!(q || state || type || level || ownership || verified);
+  const pageSize = isMobile ? 12 : 200;
 
   useEffect(() => {
-    if (!hasAnyFilter) return;
+    const media = window.matchMedia('(max-width: 639px)');
+    const sync = () => setIsMobile(media.matches);
+    sync();
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
+  }, []);
+
+  useEffect(() => {
+    if (!hasAnyFilter) {
+      setResults([]);
+      setPage(1);
+      setHasNextPage(false);
+      setSelectedId(null);
+      return;
+    }
+
     setLoading(true);
     setError(null);
+    setPage(1);
     facilitiesApi
       .list({
         q: q || undefined,
@@ -55,15 +79,75 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
         level,
         ownership,
         verified: verified ? 'true' : undefined,
-        limit: 200,
+        page: 1,
+        limit: pageSize,
       })
       .then((res) => {
         setResults(res.data);
-        setSelectedId(res.data.length > 0 ? res.data[0].id : null);
+        setHasNextPage(Boolean(res.meta?.has_next_page));
       })
       .catch((e) => setError(e.message ?? 'Search failed'))
       .finally(() => setLoading(false));
-  }, [q, state, type, level, ownership, verified, hasAnyFilter]);
+  }, [q, state, type, level, ownership, verified, hasAnyFilter, pageSize]);
+
+  useEffect(() => {
+    if (!isMobile || !hasAnyFilter || page === 1 || !hasNextPage) return;
+
+    setLoadingMore(true);
+    facilitiesApi
+      .list({
+        q: q || undefined,
+        state,
+        facility_type: type,
+        level,
+        ownership,
+        verified: verified ? 'true' : undefined,
+        page,
+        limit: pageSize,
+      })
+      .then((res) => {
+        setResults((prev) => {
+          const seen = new Set(prev.map((item) => item.id));
+          const next = res.data.filter((item) => !seen.has(item.id));
+          return [...prev, ...next];
+        });
+        setHasNextPage(Boolean(res.meta?.has_next_page));
+      })
+      .catch((e) => setError(e.message ?? 'Search failed'))
+      .finally(() => setLoadingMore(false));
+  }, [page, q, state, type, level, ownership, verified, hasAnyFilter, hasNextPage, isMobile, pageSize]);
+
+  useEffect(() => {
+    if (results.length === 0) {
+      setSelectedId(null);
+      return;
+    }
+    if (isMobile) {
+      setSelectedId(null);
+      return;
+    }
+    setSelectedId((current) => (
+      current && results.some((result) => result.id === current) ? current : results[0].id
+    ));
+  }, [results, isMobile]);
+
+  useEffect(() => {
+    if (!isMobile || !hasAnyFilter || !hasNextPage || loading || loadingMore) return;
+    const node = loadMoreRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setPage((current) => current + 1);
+        }
+      },
+      { rootMargin: '240px 0px' },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasAnyFilter, hasNextPage, isMobile, loading, loadingMore, results.length]);
 
   useEffect(() => {
     if (!selectedId) {
@@ -83,6 +167,14 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
     [results, selectedId],
   );
 
+  function handleFacilitySelect(id: string) {
+    if (isMobile) {
+      router.push(`/facilities/${id}`);
+      return;
+    }
+    setSelectedId(id);
+  }
+
   if (!hasAnyFilter) {
     return (
       <div className="text-center text-slate-500 text-sm py-20">
@@ -96,6 +188,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
       <div className="text-xs text-slate-500 mb-3">
         {loading ? 'Searching…' : `${results.length} facilities`}
         {q ? ` for "${q}"` : ''}
+        {!loading && isMobile ? ' · scroll for more' : ''}
       </div>
 
       {error && (
@@ -106,8 +199,9 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
 
       <div
         className="
-          grid gap-4 h-[calc(100vh-220px)] min-h-[560px]
+          grid gap-4 h-auto min-h-0
           grid-cols-1
+          sm:h-[calc(100vh-220px)] sm:min-h-[560px]
           lg:grid-cols-[minmax(0,340px)_1fr]
           xl:grid-cols-[minmax(0,340px)_minmax(0,1fr)_minmax(0,400px)]
         "
@@ -124,9 +218,14 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
               key={f.id}
               facility={f}
               active={selectedId === f.id}
-              onClick={() => setSelectedId(f.id)}
+              onClick={() => handleFacilitySelect(f.id)}
             />
           ))}
+          {isMobile && (loadingMore || hasNextPage) && (
+            <div ref={loadMoreRef} className="px-4 py-4 text-center text-xs text-slate-500">
+              {loadingMore ? 'Loading more facilities…' : 'Scroll to load more'}
+            </div>
+          )}
         </div>
 
         {/* ── Map ─────────────────────────────────────────────────────── */}
@@ -134,7 +233,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
           <FacilitiesLeafletMap
             facilities={results}
             selectedId={selectedId}
-            onSelect={setSelectedId}
+            onSelect={handleFacilitySelect}
           />
         </div>
 
@@ -154,7 +253,7 @@ export default function SearchResults({ q, state, type, level, ownership, verifi
         </div>
 
         {/* ── Mobile/tablet detail (slides up below the map) ─────────── */}
-        {selected && (
+        {!isMobile && selected && (
           <div className="xl:hidden lg:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
             <DetailPanel
               facility={selected}
